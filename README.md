@@ -2,11 +2,7 @@
 
 Streamlit component to annotate text span
 
-## Installation instructions
-
-```sh
-pip install st-span-annotation
-```
+**Note: This repository is under active development and is not yet ready for production use.**
 
 ## Usage instructions
 
