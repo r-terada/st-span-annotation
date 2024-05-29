@@ -31,7 +31,7 @@ class MyComponent extends StreamlitComponentBase<State> {
 
   public render = (): ReactNode => {
     const { full_text, labels } = this.props.args
-    const theme = this.props.theme || { primaryColor: 'gray' } // デフォルトテーマを設定
+    const theme = this.props.theme || { primaryColor: 'gray' }
     const style: React.CSSProperties = {}
 
     style.border = `1px solid ${this.state.selectedLabel ? theme.primaryColor : "gray"}`
@@ -46,8 +46,8 @@ class MyComponent extends StreamlitComponentBase<State> {
               style={{
                 margin: '5px',
                 border: `1px solid ${this._getLabelColor(label)}`,
-                boxShadow: `0 4px 0 ${this._getLabelColor(label)}`, // ボタンの下に色を追加
-                borderRadius: '5px' // ボタンの角を丸くする
+                boxShadow: `0 4px 0 ${this._getLabelColor(label)}`,
+                borderRadius: '5px'
               }}
             >
               {label}
@@ -98,7 +98,6 @@ class MyComponent extends StreamlitComponentBase<State> {
         if (startNode === endNode) {
           nodeText = startNode.textContent || ''
         } else {
-          // 複数のノードにまたがる選択範囲を処理
           const fragment = range.cloneContents()
           const div = document.createElement('div')
           div.appendChild(fragment)
@@ -107,7 +106,6 @@ class MyComponent extends StreamlitComponentBase<State> {
 
         let text = nodeText.substring(start, end)
 
-        // 最初と最後の空白と改行文字を削除
         const trimmedText = text.trim()
         const leadingWhitespaceLength = text.length - text.trimStart().length
         const trailingWhitespaceLength = text.length - text.trimEnd().length
@@ -119,7 +117,6 @@ class MyComponent extends StreamlitComponentBase<State> {
           const startIndex = full_text.indexOf(trimmedText, start)
           const endIndex = startIndex + trimmedText.length
 
-          // 既存のスパンと重なる範囲をチェックし、存在する場合は削除する
           this.setState(prevState => {
             const overlappingSpanIndex = prevState.spans.findIndex(span => !(span.end <= startIndex || span.start >= endIndex))
             let newSpans
@@ -182,10 +179,10 @@ class MyComponent extends StreamlitComponentBase<State> {
                   cursor: 'pointer',
                   display: 'inline-block',
                   marginLeft: '5px',
-                  boxShadow: `0 4px 0 ${this._getLabelColor(span.label)}`, // 下に色を追加
-                  borderRadius: '5px', // ボタンの角を丸くする
-                  backgroundColor: 'white', // 背景色を白に設定
-                  color: 'black' // テキスト色を黒に設定
+                  boxShadow: `0 4px 0 ${this._getLabelColor(span.label)}`,
+                  borderRadius: '5px',
+                  backgroundColor: 'white',
+                  color: 'black'
                 }}
               >
                 {this.props.args.labels.map((label: string) => (
