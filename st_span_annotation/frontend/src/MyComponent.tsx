@@ -27,6 +27,7 @@ class MyComponent extends StreamlitComponentBase<State> {
 
   public componentDidMount() {
     this._initializeColorMap()
+    this._initializeSpans()
   }
 
   public render = (): ReactNode => {
@@ -77,6 +78,29 @@ class MyComponent extends StreamlitComponentBase<State> {
     }
 
     this.setState({ colorMap })
+  }
+
+  private _initializeSpans = (): void => {
+    const { spans } = this.props.args
+    if (spans) {
+      // spansをJavaScriptのSpanインターフェースに変換
+      const convertedSpans: Span[] = spans.map((span: any) => ({
+        start: span.start,
+        end: span.end,
+        label: span.label,
+        text: span.text
+      }))
+      this.setState({ spans: convertedSpans }, () => {
+        Streamlit.setComponentValue(this.state.spans);
+      });
+    }
+  }
+
+  private _returnInitialSpans = (): void => {
+    const { spans } = this.state;
+    if (spans && spans.length > 0) {
+      Streamlit.setComponentValue(spans);
+    }
   }
 
   private _selectLabel = (label: string): void => {
