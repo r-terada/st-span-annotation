@@ -30,7 +30,7 @@ class MyComponent extends StreamlitComponentBase<State> {
   }
 
   public render = (): ReactNode => {
-    const { full_text, labels } = this.props.args
+    const { text, labels } = this.props.args
     const theme = this.props.theme || { primaryColor: 'gray' }
     const style: React.CSSProperties = {}
 
@@ -56,9 +56,9 @@ class MyComponent extends StreamlitComponentBase<State> {
         </div>
         <div
           style={{ marginTop: '20px', padding: '10px', border: '1px solid gray', whiteSpace: 'pre-wrap', position: 'relative' }}
-          onMouseUp={(e) => this._handleMouseUp(e, full_text)}
+          onMouseUp={(e) => this._handleMouseUp(e, text)}
         >
-          {this._renderTextWithSpans(full_text)}
+          {this._renderTextWithSpans(text)}
         </div>
       </div>
     )
@@ -83,7 +83,7 @@ class MyComponent extends StreamlitComponentBase<State> {
     this.setState({ selectedLabel: label })
   }
 
-  private _handleMouseUp = (event: MouseEvent<HTMLDivElement>, full_text: string): void => {
+  private _handleMouseUp = (event: MouseEvent<HTMLDivElement>, text: string): void => {
     const selection = window.getSelection()
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0)
@@ -104,17 +104,17 @@ class MyComponent extends StreamlitComponentBase<State> {
           nodeText = div.innerText
         }
 
-        let text = nodeText.substring(start, end)
+        let subText = nodeText.substring(start, end)
 
-        const trimmedText = text.trim()
-        const leadingWhitespaceLength = text.length - text.trimStart().length
-        const trailingWhitespaceLength = text.length - text.trimEnd().length
+        const trimmedText = subText.trim()
+        const leadingWhitespaceLength = subText.length - subText.trimStart().length
+        const trailingWhitespaceLength = subText.length - subText.trimEnd().length
 
         start += leadingWhitespaceLength
         end -= trailingWhitespaceLength
 
         if (trimmedText) {
-          const startIndex = full_text.indexOf(trimmedText, start)
+          const startIndex = text.indexOf(trimmedText, start)
           const endIndex = startIndex + trimmedText.length
 
           this.setState(prevState => {
@@ -143,10 +143,10 @@ class MyComponent extends StreamlitComponentBase<State> {
     })
   }
 
-  private _renderTextWithSpans = (full_text: string): ReactNode => {
+  private _renderTextWithSpans = (text: string): ReactNode => {
     const { spans } = this.state
     if (spans.length === 0) {
-      return <span>{full_text}</span>
+      return <span>{text}</span>
     }
 
     const elements: ReactNode[] = []
@@ -154,10 +154,10 @@ class MyComponent extends StreamlitComponentBase<State> {
 
     spans.forEach((span, index) => {
       if (span.start > lastIndex) {
-        elements.push(<span key={`text-${lastIndex}`}>{full_text.substring(lastIndex, span.start)}</span>)
+        elements.push(<span key={`text-${lastIndex}`}>{text.substring(lastIndex, span.start)}</span>)
       }
 
-      const spanText = full_text.substring(span.start, span.end)
+      const spanText = text.substring(span.start, span.end)
       const lines = spanText.split('\n')
       lines.forEach((line, lineIndex) => {
         if (lineIndex > 0) {
@@ -197,8 +197,8 @@ class MyComponent extends StreamlitComponentBase<State> {
       lastIndex = span.end
     })
 
-    if (lastIndex < full_text.length) {
-      elements.push(<span key={`text-end`}>{full_text.substring(lastIndex)}</span>)
+    if (lastIndex < text.length) {
+      elements.push(<span key={`text-end`}>{text.substring(lastIndex)}</span>)
     }
 
     return elements
