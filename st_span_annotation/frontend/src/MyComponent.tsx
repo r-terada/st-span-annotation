@@ -96,13 +96,6 @@ class MyComponent extends StreamlitComponentBase<State> {
     }
   }
 
-  private _returnInitialSpans = (): void => {
-    const { spans } = this.state;
-    if (spans && spans.length > 0) {
-      Streamlit.setComponentValue(spans);
-    }
-  }
-
   private _selectLabel = (label: string): void => {
     this.setState({ selectedLabel: label })
   }
