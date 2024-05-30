@@ -2,7 +2,7 @@ import os
 from typing import TypedDict
 import streamlit.components.v1 as components
 
-_RELEASE = os.getenv("RELEASE", "false").lower() == "true"
+_RELEASE = True
 
 if not _RELEASE:
     _component_func = components.declare_component(
