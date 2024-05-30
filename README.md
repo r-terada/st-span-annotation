@@ -10,7 +10,7 @@ Streamlit component to annotate text span
 from typing import TypedDict
 
 import streamlit as st
-from st_span_annotation import st_span_annotation, Span
+from st_span_annotation import st_span_annotation
 
 class Span(TypedDict):
     start: int
