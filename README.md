@@ -2,8 +2,6 @@
 
 Streamlit component to annotate text span
 
-**Note: This repository is under active development and is not yet ready for production use.**
-
 ## Usage instructions
 
 ```python
