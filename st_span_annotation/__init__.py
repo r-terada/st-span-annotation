@@ -28,7 +28,6 @@ def st_span_annotation(
     spans: list[Span],
     color_palette: dict[str, str] = None,
     key: str = None,
-    **kwargs
 ) -> Span:
     component_value = _component_func(
         text=text,
@@ -36,6 +35,5 @@ def st_span_annotation(
         spans=spans,
         color_palette=color_palette,
         key=key,
-        **kwargs
     )
     return component_value
