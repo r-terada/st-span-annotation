@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
     name="st-span-annotation",
-    version="0.0.2",
+    version="0.0.3",
     author="r-terada",
     author_email="r.terada1993@gmail.com",
     description="Streamlit component to annotate text span",
