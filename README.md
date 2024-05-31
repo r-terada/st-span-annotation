@@ -38,7 +38,6 @@ result: list[Span] = st_span_annotation(
     labels=labels,
     spans=initial_spans,  # optional
     color_palette=color_palette,  # optional
-    key="span_annotation",
 )
 
 st.write(result)

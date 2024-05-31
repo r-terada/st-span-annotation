@@ -25,15 +25,13 @@ class Span(TypedDict):
 def st_span_annotation(
     text: str,
     labels: list[str],
-    spans: list[Span],
-    color_palette: dict[str, str] = None,
-    key: str = None,
+    spans: list[Span] = [],
+    color_palette: dict[str, str] = {},
 ) -> Span:
     component_value = _component_func(
         text=text,
         labels=labels,
         spans=spans,
         color_palette=color_palette,
-        key=key,
     )
     return component_value
