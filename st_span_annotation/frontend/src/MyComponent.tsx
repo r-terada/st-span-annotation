@@ -28,6 +28,7 @@ class MyComponent extends StreamlitComponentBase<State> {
   public componentDidMount() {
     this._initializeColorMap()
     this._initializeSpans()
+    this._initializeSeclectedLabel()
   }
 
   public render = (): ReactNode => {
@@ -93,6 +94,13 @@ class MyComponent extends StreamlitComponentBase<State> {
       this.setState({ spans: convertedSpans }, () => {
         Streamlit.setComponentValue(this.state.spans);
       });
+    }
+  }
+
+  private _initializeSeclectedLabel = (): void => {
+    const { labels } = this.props.args
+    if (labels && labels.length > 0) {
+      this.setState({ selectedLabel: labels[0] })
     }
   }
 
