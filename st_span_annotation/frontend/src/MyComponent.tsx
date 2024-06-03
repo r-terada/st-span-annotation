@@ -73,7 +73,6 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
     )
   }
 
-
   private _initializeColorMap = (): void => {
     const { labels, color_palette } = this.props.args
     const defaultColors = ['lightblue', 'lightgreen', 'lightpink', 'lightcoral', 'lightgoldenrodyellow']
@@ -113,6 +112,19 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
 
   private _selectLabel = (label: string): void => {
     this.setState({ selectedLabel: label })
+  }
+
+  private _getLabelColor = (label: string): string => {
+    return this.state.colorMap[label] || 'lightgray'
+  }
+
+  private _handleLabelChange = (index: number, newLabel: string): void => {
+    this.setState(prevState => {
+      const spans = [...prevState.spans]
+      spans[index].label = newLabel
+      Streamlit.setComponentValue(spans)
+      return { spans }
+    })
   }
 
   private _handleMouseUp = (event: MouseEvent<HTMLDivElement>, text: string): void => {
@@ -164,15 +176,6 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
         }
       }
     }
-  }
-
-  private _handleLabelChange = (index: number, newLabel: string): void => {
-    this.setState(prevState => {
-      const spans = [...prevState.spans]
-      spans[index].label = newLabel
-      Streamlit.setComponentValue(spans)
-      return { spans }
-    })
   }
 
   private _renderTextWithSpans = (text: string): ReactNode => {
@@ -234,10 +237,6 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
     }
 
     return elements
-  }
-
-  private _getLabelColor = (label: string): string => {
-    return this.state.colorMap[label] || 'lightgray'
   }
 }
 
