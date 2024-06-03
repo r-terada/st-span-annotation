@@ -12,13 +12,20 @@ interface Span {
   text: string
 }
 
+interface Args {
+  text: string;
+  labels: string[];
+  spans: any[];
+  color_palette?: { [key: string]: string };
+}
+
 interface State {
   selectedLabel: string | null
   spans: Span[]
   colorMap: { [key: string]: string }
 }
 
-class MyComponent extends StreamlitComponentBase<State> {
+class MyComponent extends StreamlitComponentBase<State, Args> {
   public state: State = {
     selectedLabel: null,
     spans: [],
