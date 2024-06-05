@@ -27,11 +27,13 @@ def st_span_annotation(
     labels: list[str],
     spans: list[Span] = [],
     color_palette: dict[str, str] = {},
+    is_editable: bool = True,
 ) -> Span:
     component_value = _component_func(
         text=text,
         labels=labels,
         spans=spans,
         color_palette=color_palette,
+        is_editable=is_editable,
     )
     return component_value
