@@ -99,7 +99,7 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
         end: span.end,
         label: span.label,
         text: span.text
-      }))
+      })).sort((a, b) => a.start - b.start)
       this.setState({ spans: convertedSpans }, () => {
         Streamlit.setComponentValue(this.state.spans);
       });
@@ -123,12 +123,13 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
 
   private _handleLabelChange = (index: number, newLabel: string): void => {
     this.setState(prevState => {
-      const spans = [...prevState.spans]
+      let spans = [...prevState.spans]
       if (newLabel === "delete") {
         spans.splice(index, 1)
       } else {
         spans[index].label = newLabel
       }
+      spans = spans.sort((a, b) => a.start - b.start)
       Streamlit.setComponentValue(spans)
       return { spans }
     })
