@@ -124,11 +124,16 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
   private _handleLabelChange = (index: number, newLabel: string): void => {
     this.setState(prevState => {
       const spans = [...prevState.spans]
-      spans[index].label = newLabel
+      if (newLabel === "delete") {
+        spans.splice(index, 1)
+      } else {
+        spans[index].label = newLabel
+      }
       Streamlit.setComponentValue(spans)
       return { spans }
     })
   }
+
 
   private _handleMouseUp = (event: MouseEvent<HTMLDivElement>, text: string): void => {
     const selection = window.getSelection()
@@ -226,6 +231,7 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
                 {this.props.args.labels.map((label: string) => (
                   <option key={label} value={label}>{label}</option>
                 ))}
+                 <option key="delete" value="delete">🗑️ delete</option>
               </select>
             )}
           </span>
