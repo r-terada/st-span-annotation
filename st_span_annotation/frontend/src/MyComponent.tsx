@@ -169,18 +169,15 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
           const startIndex = text.indexOf(trimmedText, start)
           const endIndex = startIndex + trimmedText.length
 
+        const overlappingSpan = this.state.spans.some(span => !(span.end <= startIndex || span.start >= endIndex));
+        if (!overlappingSpan) {
           this.setState(prevState => {
-            const overlappingSpanIndex = prevState.spans.findIndex(span => !(span.end <= startIndex || span.start >= endIndex))
-            let newSpans
-            if (overlappingSpanIndex >= 0) {
-              newSpans = prevState.spans.filter((_, idx) => idx !== overlappingSpanIndex)
-            } else {
               const newSpan: Span = { start: startIndex, end: endIndex, label: this.state.selectedLabel!, text: trimmedText }
-              newSpans = [...prevState.spans, newSpan].sort((a, b) => a.start - b.start)
-            }
-            Streamlit.setComponentValue(newSpans)
-            return { spans: newSpans }
-          })
+              const newSpans = [...prevState.spans, newSpan].sort((a, b) => a.start - b.start)
+              Streamlit.setComponentValue(newSpans)
+              return { spans: newSpans }
+            })
+          }
         }
       }
     }
