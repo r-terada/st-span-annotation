@@ -13,10 +13,11 @@ interface Span {
 }
 
 interface Args {
-  text: string;
-  labels: string[];
-  spans: any[];
-  color_palette?: { [key: string]: string };
+  text: string
+  labels: string[]
+  spans: any[]
+  color_palette?: { [key: string]: string }
+  is_editable?: boolean
 }
 
 interface State {
@@ -39,35 +40,38 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
   }
 
   public render = (): ReactNode => {
-    const { text, labels } = this.props.args
-    const theme = this.props.theme || { primaryColor: 'gray' }
-    const style: React.CSSProperties = {}
-
-    style.border = `1px solid ${this.state.selectedLabel ? theme.primaryColor : "gray"}`
+    const { text, labels, is_editable = true } = this.props.args
+    const style: React.CSSProperties = {
+      maxHeight: '100%',
+      overflow: 'auto',
+      border: `1px solid gray`,
+    }
 
     return (
-      <div>
-        <div>
-          {labels && labels.map((label: string) => (
-            <button
-              key={label}
-              onClick={() => this._selectLabel(label)}
-              style={{
-                margin: '5px',
-                border: `1px solid ${this._getLabelColor(label)}`,
-                boxShadow: `0 4px 0 ${this._getLabelColor(label)}`,
-                borderRadius: '5px'
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+      <div style={style}>
+        {is_editable && (
+          <div>
+            {labels && labels.map((label: string) => (
+              <button
+                key={label}
+                onClick={() => this._selectLabel(label)}
+                style={{
+                  margin: '5px',
+                  border: `1px solid ${this._getLabelColor(label)}`,
+                  boxShadow: `0 4px 0 ${this._getLabelColor(label)}`,
+                  borderRadius: '5px'
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
         <div
-          style={{ marginTop: '20px', padding: '10px', border: '1px solid gray', whiteSpace: 'pre-wrap', position: 'relative' }}
-          onMouseUp={(e) => this._handleMouseUp(e, text)}
+          style={{ marginTop: '20px', padding: '10px', border: '1px solid gray', whiteSpace: 'pre-wrap', position: 'relative',  overflow: 'auto' }}
+          onMouseUp={(e) => is_editable && this._handleMouseUp(e, text)}
         >
-          {this._renderTextWithSpans(text)}
+          {this._renderTextWithSpans(text, is_editable)}
         </div>
       </div>
     )
@@ -90,7 +94,6 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
   private _initializeSpans = (): void => {
     const { spans } = this.props.args
     if (spans) {
-      // spansをJavaScriptのSpanインターフェースに変換
       const convertedSpans: Span[] = spans.map((span: any) => ({
         start: span.start,
         end: span.end,
@@ -178,7 +181,7 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
     }
   }
 
-  private _renderTextWithSpans = (text: string): ReactNode => {
+  private _renderTextWithSpans = (text: string, is_editable: boolean): ReactNode => {
     const { spans } = this.state
     if (spans.length === 0) {
       return <span>{text}</span>
@@ -206,7 +209,7 @@ class MyComponent extends StreamlitComponentBase<State, Args> {
             {lineIndex === lines.length - 1 && (
               <select
                 value={span.label}
-                onChange={(e) => this._handleLabelChange(index, e.target.value)}
+                onChange={(e) => is_editable && this._handleLabelChange(index, e.target.value)}
                 style={{
                   border: 'none',
                   fontSize: '0.8em',
