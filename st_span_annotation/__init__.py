@@ -30,6 +30,19 @@ def st_span_annotation(
     is_editable: bool = True,
     key: str | None = None,
 ) -> list[Span]:
+    """Create a span annotation component.
+
+    Args:
+        text (str): text to be annotated
+        labels (list[str]): list of labels
+        spans (list[Span], optional): list of initial spans. Defaults to [].
+        color_palette (dict[str, str], optional): dictionary of label-color pairs. if not provided, default colors will be used. Defaults to {}.
+        is_editable (bool, optional): whether the spans are editable. Defaults to True.
+        key (str | None, optional): An optional st component key that makes this component uniquely identifiable. Defaults to None.
+
+    Returns:
+        list[Span]: list of annotated spans
+    """
     component_value = _component_func(
         text=text,
         labels=labels,
